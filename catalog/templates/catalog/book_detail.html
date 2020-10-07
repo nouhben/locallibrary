@@ -1,38 +1,44 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="card mb-3" style="max-width: 540px;">
+<div class="card mb-3">
     <div class="row g-0">
-        <div class="col-md-4">
-            <img src="..." alt="...">
+        <div class="col-md-4 my-auto">
+            <img src="https://graphiccloud.net/wp-content/uploads/2019/01/Hardcover-Book-Mockup-PSD.jpg" alt="..."
+                width="300px" class="img-thumbnail img-fluid">
         </div>
         <div class="col-md-8">
             <div class="card-body">
                 <h5 class="card-title">{{book.title}}</h5>
-                <p class="card-text"><strong>Author:</strong><a href="">{{ book.author }}</a></p>
+                <p class="card-text"><strong>Author:</strong>
+                    <a href="">{% url 'author-detail' book.author.pk %}</a>
+                </p>
                 <p class="card-text">{{book.summary}}</p>
                 <!-- author detail link not yet defined -->
                 <p class="card-text"><strong>ISBN:</strong> {{ book.isbn }}</p>
                 <p class="card-text"><strong>Language:</strong> {{ book.language_set.all }}</p>
                 <p class="card-text"><strong>Genre:</strong> {{ book.genre.all|join:", " }}</p>
-
-                <div style="margin-left:20px;margin-top:20px">
-                    <h4>Copies</h4>
-
-                    {% for copy in book.bookinstance_set.all %}
-                    <hr>
-                    <p
-                        class="{% if copy.status == 'a' %}text-success{% elif copy.status == 'm' %}text-danger{% else %}text-warning{% endif %} card-text">
-                        {{ copy.get_status_display }}
-                    </p>
-                    {% if copy.loan_status != 'a' %}
-                    <p><strong>Due to be returned:</strong> {{ copy.due_back_date }}</p>
-                    {% endif %}
-                    <p><strong>Imprint:</strong> {{ copy.imprint }}</p>
-                    <p class="text-muted"><strong>Id:</strong> {{ copy.id }}</p>
-                    {% endfor %}
-                </div>
             </div>
         </div>
     </div>
 </div>
-{% endblock content %}
+<div class="row">
+    {% for copy in book.bookinstance_set.all %}
+    <div class="col-sm-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Special title treatment</h5>
+                <p
+                    class="{% if copy.status == 'a' %}text-success{% elif copy.status == 'm' %}text-danger{% else %}text-warning{% endif %} card-text">
+                    {{ copy.get_status_display }}
+                </p>
+                {% if copy.loan_status != 'a' %}
+                <p class="card-text"><strong>Due to be returned:</strong> {{ copy.due_back_date }}</p>
+                {% endif %}
+                <p class="card-text"><strong>Imprint:</strong> {{ copy.imprint }}</p>
+                <p class="text-muted card-text"><strong>Id:</strong> {{ copy.id }}</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endblock content %}

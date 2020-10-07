@@ -28,6 +28,7 @@ class BookListView(ListView):
     context_object_name = 'books' #default is: book_list
     queryset = Book.objects.filter(title__icontains='E-C')[:5] #five books that the title contains the word 'ma'
     #template_name = 'books/my_arbitrary_template_name_list.html'
+    paginate_by = 3
 
     def get_queryset(self):
         return Book.objects.filter(title__icontains='E-C')[:5]
