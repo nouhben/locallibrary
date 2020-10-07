@@ -8,10 +8,13 @@ admin.site.register(Genre)
 admin.site.register(Language)
 #admin.site.register(BookInstance)
 
+class BookInline(admin.TabularInline):
+    model = Book
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ('name','date_of_birth','date_of_death')
     #using ('date_of_birth', 'date_of_death') will display these fields horizontally
     fields = ['name', ('date_of_birth', 'date_of_death')]
+    inlines = [BookInline]
     
 #register the model with its corresponding new admin view instead of the default view
 admin.site.register(Author, AuthorAdmin)
@@ -21,6 +24,7 @@ class BooksInstanceInline(admin.TabularInline):
     model = BookInstance
 #Register the Admin classes for BookInstance using the decorator
 #the @register decorator to register the models 
+
 #(this does exactly the same thing as the admin.site.register(BookInstance)
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
@@ -42,3 +46,4 @@ class BookInstanceAdmin(admin.ModelAdmin):
             'fields':('loan_status','due_back_date')
         }),
     )
+
