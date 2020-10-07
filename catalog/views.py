@@ -55,3 +55,20 @@ class BookDetailView(DetailView):
 #     book = get_object_or_404(Book, pk=primary_key)
 #     return render(request, 'catalog/book_detail.html', context={'book': book})
 
+
+class AuthorListView(ListView):
+    model = Author
+    context_object_name = 'authors'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Author.objects.all()
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get the context
+        context = super(AuthorListView, self).get_context_data(**kwargs)
+        # Create any data and add it to the context
+        context['this_work'] = BookInstance.objects.all().count()
+        return context
+        
+class AuthorDetailView(DetailView):
+    model = Author

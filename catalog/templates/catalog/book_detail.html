@@ -10,7 +10,7 @@
             <div class="card-body">
                 <h5 class="card-title">{{book.title}}</h5>
                 <p class="card-text"><strong>Author:</strong>
-                    <a href="">{% url 'author-detail' book.author.pk %}</a>
+                    <a href="{% url 'author-detail' book.author.pk %}">{{book.author}}</a>
                 </p>
                 <p class="card-text">{{book.summary}}</p>
                 <!-- author detail link not yet defined -->
@@ -23,20 +23,19 @@
 </div>
 <div class="row">
     {% for copy in book.bookinstance_set.all %}
-    <div class="col-sm-4">
+    <div class="col-sm-3">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p
-                    class="{% if copy.status == 'a' %}text-success{% elif copy.status == 'm' %}text-danger{% else %}text-warning{% endif %} card-text">
-                    {{ copy.get_status_display }}
-                </p>
+                <h5
+                    class="{% if copy.loan_status == 'A' %}bg-success{% elif copy.loan_status == 'M' %}bg-danger{% else %}bg-warning{% endif %} card-title badge">
+                    {{ copy.get_loan_status_display }}
+                </h5>
                 {% if copy.loan_status != 'a' %}
                 <p class="card-text"><strong>Due to be returned:</strong> {{ copy.due_back_date }}</p>
                 {% endif %}
                 <p class="card-text"><strong>Imprint:</strong> {{ copy.imprint }}</p>
                 <p class="text-muted card-text"><strong>Id:</strong> {{ copy.id }}</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <a href="#" class="btn btn-primary">Borrow</a>
             </div>
         </div>
     </div>

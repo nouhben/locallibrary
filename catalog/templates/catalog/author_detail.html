@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card mb-3">
+    <div class="row g-0">
+        <div class="col-md-4 my-auto">
+            <img src="https://graphiccloud.net/wp-content/uploads/2019/01/Hardcover-Book-Mockup-PSD.jpg" alt="..."
+                width="300px" class="img-thumbnail img-fluid">
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title">{{author.name}}</h5>
+                <!-- author detail link not yet defined -->
+                <p class="card-text"><strong>Date of birth:</strong> {{author.date_of_birth}}</p>
+                <p class="card-text"><small>Date of death:</small> {{author.date_of_death}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    {% for copy in author.book_set.all %}
+    <div class="col-sm-3">
+        <div class="card">
+            <div class="card-body">
+                <h5
+                    class="bg-success card-title badge">
+                    {{ copy.genre.all|join:", " }}
+                </h5>
+                <p class="card-text"><strong>Title</strong> {{ copy.title }}</p>
+                <p class="card-text"><strong>ISBN:</strong> {{ copy.isbn }}</p>
+                <a href="{% url 'book-detail' copy.pk %}" class="btn btn-primary">Details</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endblock content %}
