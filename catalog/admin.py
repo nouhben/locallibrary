@@ -10,10 +10,11 @@ admin.site.register(Language)
 
 class BookInline(admin.TabularInline):
     model = Book
+
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ('name','date_of_birth','date_of_death')
     #using ('date_of_birth', 'date_of_death') will display these fields horizontally
-    fields = ['name', ('date_of_birth', 'date_of_death')]
+    fields = ['name', ('date_of_birth', 'date_of_death'),'bio']
     inlines = [BookInline]
     
 #register the model with its corresponding new admin view instead of the default view

@@ -25,7 +25,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #My Apps
     'catalog.apps.CatalogConfig',
+    'users.apps.UsersConfig',
+    #Third party
 ]
 
 MIDDLEWARE = [
@@ -124,7 +127,7 @@ STATICFILES_DIRS =[
 # CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # #redirect the user to the home page when successfully logged in
-# LOGIN_REDIRECT_URL = 'blog-home'
+LOGIN_REDIRECT_URL = 'index'
 # #this is the url that django will use when requesting login from any place
 # #by defaults it looks in /accounts/login.html
 # LOGIN_URL = 'login'

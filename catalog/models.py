@@ -6,6 +6,7 @@ class Author(models.Model):
     name = models.CharField(max_length=255)
     date_of_birth = models.DateField(auto_now=False,auto_now_add=False,null=True, blank=True)
     date_of_death = models.DateField(auto_now=False, auto_now_add=False, null=True, blank=True, verbose_name='Died')
+    bio = models.TextField(max_length=1000, help_text='Enter a brief bio of the author', default='', blank=True, null=True)
     class Meta:
         ordering = ['name']
     def get_absolute_url(self):

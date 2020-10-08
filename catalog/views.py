@@ -3,6 +3,13 @@ from django.shortcuts import render
 # Create your views here.
 from catalog.models import Book, BookInstance, Author, Genre, Language
 def index(request):
+    # Get a session value, setting a default if it is not present
+    # num_visits = request.session.get('num_visits',0)
+    # if request.session['num_visits']:
+    #     request.session['num_visits'] = num_visits + 1
+    # Number of visits to this view, as counted in the session variable.
+    num_visits = request.session.get('num_visits', 0)
+    request.session['num_visits'] = num_visits + 1
     books = Book.objects.all()
     instances = BookInstance.objects.all()
     authors = Author.objects.all()
@@ -18,6 +25,7 @@ def index(request):
         'books_containing_x':books_containing_x.count(),
         'genre_containing_x':Genre.objects.filter(name__icontains='fanta').count(),
         'title':'Home',
+        'num_visits': num_visits,
     }
     return render(request,'catalog/index.html', context=context)
 
@@ -69,6 +77,6 @@ class AuthorListView(ListView):
         # Create any data and add it to the context
         context['this_work'] = BookInstance.objects.all().count()
         return context
-        
+
 class AuthorDetailView(DetailView):
     model = Author
