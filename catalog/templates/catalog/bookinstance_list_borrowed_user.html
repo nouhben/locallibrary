@@ -1,19 +1,33 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Borrowed books</h1>
+<h1>Borrowed books</h1>
 
-    {% if mybooks %}
-    <ul>
+{% if mybooks %}
+<div class="container">
+    <div class="row">
+        {% for copy in mybooks %}
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-body">
+                    <p
+                        class="{% if copy.loan_status == 'A' %}bg-success{% elif copy.loan_status == 'M' %}bg-danger{% else %}bg-warning{% endif %} card-title badge">
+                        {{ copy.get_loan_status_display }}
+                    </p>
+                    <p class="card-text">
+                        <a href="{% url 'book-detail' copy.book.pk %}">{{copy.book.title}}</a>
+                    </p>
+                    <p class="card-text {% if copy.is_overdue %}text-danger{% endif %}">
+                        <strong>Due to be returned:</strong> {{ copy.due_back_date }}</p>
+                    <p class="text-muted card-text"><strong>ISBN: </strong> {{ copy.id }}</p>
 
-      {% for bookinst in mybooks %} 
-      <li class="{% if bookinst.is_overdue %}text-danger{% endif %}">
-        <a href="{% url 'book-detail' bookinst.book.pk %}">{{bookinst.book.title}}</a> ({{ bookinst.due_back_date }})        
-      </li>
-      {% endfor %}
-    </ul>
-
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
     {% else %}
-      <p>There are no books borrowed.</p>
-    {% endif %}       
+    <p>There are no books borrowed.</p>
+    {% endif %}
+</div>
 {% endblock %}

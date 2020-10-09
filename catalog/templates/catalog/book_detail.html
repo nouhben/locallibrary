@@ -35,9 +35,15 @@
                 {% endif %}
                 <p class="card-text"><strong>Imprint:</strong> {{ copy.imprint }}</p>
                 <p class="text-muted card-text"><strong>Id:</strong> {{ copy.id }}</p>
-                <a href="#" class="btn btn-primary">Borrow</a>
+                {% if copy.borrower%}
+                <p class="card-text"><strong>Borrow:</strong> <a href="#"
+                        class="btn btn-primary">{{ copy.borrower }}</a></p>
+                {% endif %}
+
             </div>
         </div>
     </div>
+
     {% endfor %}
-    {% endblock content %}
+</div>
+{% endblock content %}

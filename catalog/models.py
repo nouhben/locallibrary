@@ -71,7 +71,7 @@ class BookInstance(models.Model):
     @property #it is like a setter
     def is_overdue(self):
         #the first elf.due_back_date is to make sure it is not null
-        if self.due_back_date and date.today > self.due_back_date:
+        if self.due_back_date and date.today() > self.due_back_date:
             return True
         return False
     class Meta:
