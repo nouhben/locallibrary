@@ -76,7 +76,14 @@ class BookInstance(models.Model):
         return False
     class Meta:
         ordering = ['-due_back_date']
+        permissions = (('can_mark_returned','Set the book as returned'),)
 
     def __str__(self):
         return f'{self.id} {self.book.title}'
+
+    def set_returned(self, **kwargs):
+        self.loan_status = 'M'
+        self.due_back_date = None
+        self.borrower = None
+
 

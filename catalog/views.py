@@ -89,3 +89,59 @@ class LoanedBooksByUserListView(LoginRequiredMixin, ListView):
     context_object_name = 'mybooks'
     def get_queryset(self):
         return BookInstance.objects.filter(borrower=self.request.user).filter(loan_status__exact='O').order_by('due_back_date')
+
+from django.contrib.auth.mixins import PermissionRequiredMixin
+class LoanedBookListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    model = BookInstance
+    paginate_by= 10
+    context_object_name = 'mybooks'
+    template_name = 'catalog/bookinstance_list_borrowed_librarian.html'
+    #permission_required = 'catalog.can_mark_returned'
+    # Or multiple permissions
+    permission_required = ('catalog.can_mark_returned')
+    # Note that 'catalog.can_edit' is just an example
+    # the catalog application doesn't have such permission!
+    def get_queryset(self):
+        return BookInstance.objects.filter(loan_status__exact='O').order_by('due_back_date')
+
+from django.contrib.auth.decorators import permission_required
+from django.shortcuts import get_object_or_404
+from django.urls import reverse
+from django.http import HttpResponseRedirect
+@permission_required('catalog.can_mark_returned')
+def mark_book_returned(request, instance_id):
+    instance = get_object_or_404(BookInstance, id=instance_id)
+    instance.loan_status = 'M'
+    instance.borrower = None
+    instance.due_back_date = None
+    instance.save()
+
+    return HttpResponseRedirect(reverse('borrowed-books'))
+
+from .forms import RenewBookForm
+import datetime
+
+@permission_required('catalog.can_mark_returned')
+def renew_book_librarian(request, instance_id):
+    """View function for renewing a specific BookInstance by librarian."""
+    instance = get_object_or_404(BookInstance, id=instance_id)
+    # If this is a POST request then process the Form data
+    if request.method == 'POST':
+        # Create a form instance and populate it with data from the request (binding):
+        form = RenewBookForm(request.POST)
+        # Check if the form is valid:
+        if form.is_valid():
+             # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
+             instance.due_back_date = form.cleaned_data['renewal_date']
+             instance.save()
+             return HttpResponseRedirect(reverse('borrowed-books'))
+    # If this is a GET (or any other method) create the default form.
+    else:
+        proposed_renewal_date = datetime.date.today() + datetime.timedelta(weeks=3)
+        form = RenewBookForm(initial={'renewal_date':proposed_renewal_date})
+
+    context = {
+        'form':form,
+        'book_instance':instance,
+    }
+    return render(request,'catalog/book_renew_librarian.html',context)
