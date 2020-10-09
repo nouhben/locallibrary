@@ -80,3 +80,13 @@ class AuthorListView(ListView):
 
 class AuthorDetailView(DetailView):
     model = Author
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+class LoanedBooksByUserListView(LoginRequiredMixin, ListView):
+    model = BookInstance
+    template_name = 'catalog/bookinstance_list_borrowed_user.html'
+    paginate_by= 5
+    context_object_name = 'mybooks'
+    
+    def get_queryset(self):
+        return BookInstance.objects.filter(borrower=self.request.user).filter(loan_status__exact='O').order_by('due_back_date')

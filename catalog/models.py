@@ -52,6 +52,8 @@ class Book(models.Model):
         return ', '.join([language.name for language in self.language.all()[:3]])
     display_language.short_description = 'Language'
 
+from django.contrib.auth.models import User
+from datetime import date
 class BookInstance(models.Model):
     LOAN_STATUS = [
         ('M', 'Maintenance'),
@@ -64,7 +66,14 @@ class BookInstance(models.Model):
     book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True)
     loan_status = models.CharField(max_length=1, choices=LOAN_STATUS, blank=True, default='m', help_text='Book availability',)
     imprint = models.CharField(max_length=255)
+    borrower = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
+    @property #it is like a setter
+    def is_overdue(self):
+        #the first elf.due_back_date is to make sure it is not null
+        if self.due_back_date and date.today > self.due_back_date:
+            return True
+        return False
     class Meta:
         ordering = ['-due_back_date']
 

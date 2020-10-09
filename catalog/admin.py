@@ -35,7 +35,7 @@ class BookAdmin(admin.ModelAdmin):
 
 @admin.register(BookInstance)
 class BookInstanceAdmin(admin.ModelAdmin):
-    list_display = ('book','loan_status','due_back_date',)
+    list_display = ('book','loan_status','due_back_date','borrower')
     list_filter = ('book','loan_status','due_back_date')
     #To section the detail view of bookInstance into groups: the info related to someting put theme in a 
     #section together
@@ -44,7 +44,7 @@ class BookInstanceAdmin(admin.ModelAdmin):
             'fields':('book','imprint','id'),
         }),
         ('Availability',{
-            'fields':('loan_status','due_back_date')
+            'fields':('loan_status','due_back_date','borrower')
         }),
     )
 

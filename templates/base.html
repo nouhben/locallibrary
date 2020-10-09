@@ -59,6 +59,22 @@
             <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success" type="submit">Search</button>
           </form>
+          {% if user.is_authenticated %}
+            <ul class="navbar-nav mr-auto mb-2 mb-md-0">
+            <li class="nav-item">
+            {% comment  %}
+            we are using: ?next={{request.path}} so the view will redirect to the page where the user was when he logged/in/out
+            like in flutter keeping the state
+            {% endcomment %}
+              <a class="nav-link" href="{% url 'logout' %}?next={{request.path}}">Logout</a>
+              </li>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}?next={{request.path}}">Username: {{user.get_username}}</a>
+              </li>
+            </li>
+            </ul>
+          {% endif %}
         </div>
       </div>
     </nav>

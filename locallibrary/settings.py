@@ -130,4 +130,8 @@ STATICFILES_DIRS =[
 LOGIN_REDIRECT_URL = 'index'
 # #this is the url that django will use when requesting login from any place
 # #by defaults it looks in /accounts/login.html
-# LOGIN_URL = 'login'
+#or when the user request a view that requires login it will redirect him to this route
+LOGIN_URL = 'login'
+
+#simulate sending emails in the consol
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
