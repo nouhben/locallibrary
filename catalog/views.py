@@ -176,9 +176,9 @@ class BookCreate(PermissionRequiredMixin, CreateView):
 class BookUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = ('catalog.can_create_author',)
     model = Book
-    fields = ['name','date_of_birth', 'date_of_death']
+    fields = ['title','summary', 'author','isbn','genre','language']
 
 class BookDelete(PermissionRequiredMixin, DeleteView):
     permission_required = ('catalog.can_create_author',)
     model = Book
-    success_url = reverse_lazy('authors')
+    success_url = reverse_lazy('books')

@@ -15,6 +15,43 @@
     <p>Library is empty</p>
     {%endif%}
 </ul>
+<div class="row">
+    <div class="col-md-12">
+    {% if books %}
+        {% if user.is_authenticated %}
+            {% if perms.catalog.can_create_author %}
+        <h4 class="my-4 py-4">List All Books:</h4>
+        <table id="mytable" class="table table-light">
+            <thead>
+                <th scope="col">#</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Num of copies</th>
+                <th></th>
+                <th></th>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                <tr>
+                    <th scope="row">{{forloop.counter}}</th>
+                    <td><a href="{{book.get_absolute_url}}">{{ book.title }}</a></td>
+                    <td>
+                        <a href="{{book.author.get_absolute_url}}">{{ book.author }}</a>
+                    </td>
+                    <td>
+                        <p class="text-center">{{ num_of_instances }}</p>
+                    </td>
+                    <td><a href="{% url 'book-update' book.pk %}" class="text-light btn btn-info">Update</a></td>
+                    <td><a href="{% url 'book-delete' book.pk %}" class="text-light btn btn-danger">Delete</a></td>
+                </tr>
+                {%endfor%}
+             </tbody>
+        </table>
+            {%endif%}
+        {%endif%}
+    {%endif%}
+    </div>
+</div>
 {% endblock content %}
 {% block pagination %}
 

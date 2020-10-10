@@ -27,9 +27,9 @@
 
 
     <div class="col-md-12">
-    {% if authors %}
-                {% if user.is_authenticated %}
-                {% if perms.catalog.can_create_author %}
+        {% if authors %}
+        {% if user.is_authenticated %}
+        {% if perms.catalog.can_create_author %}
         <h4>List All authors:</h4>
         <table id="mytable" class="table table-light">
             <thead>
@@ -40,7 +40,7 @@
                 <th>Delete</th>
             </thead>
             <tbody>
-                
+
                 {% for author in authors %}
                 <tr>
                     <th scope="row">{{forloop.counter}}</th>
@@ -68,31 +68,32 @@
                 {%endfor%}
                 {% else %}
                 <h4>List All authors:</h4>
-        <table id="mytable" class="table table-light">
-            <thead>
-                <th scope="col">#</th>
-                <th>Name</th>
-                <th>Number of books</th>
-            </thead>
-            <tbody>
-                {% for author in authors %}
-                <tr>
-                    <th scope="row">{{forloop.counter}}</th>
-                    <td><a href="{{author.get_absolute_url}}">{{ author.name }}</a></td>
-                    <td>
-                        <p class="text-center">{{ author.book_set.all.count }}</p>
-                    </td>
-                </tr>
-                {%endfor%}
-                {%endif%}
-                {%endif%}
-                {%endif%}
-            </tbody>
-        </table>
+                <table id="mytable" class="table table-light">
+                    <thead>
+                        <th scope="col">#</th>
+                        <th>Name</th>
+                        <th>Number of books</th>
+                    </thead>
+                    <tbody>
+                        {% for author in authors %}
+                        <tr>
+                            <th scope="row">{{forloop.counter}}</th>
+                            <td><a href="{{author.get_absolute_url}}">{{ author.name }}</a></td>
+                            <td>
+                                <p class="text-center">{{ author.book_set.all.count }}</p>
+                            </td>
+                        </tr>
+                        {%endfor%}
+                        {%endif%}
+                        {%endif%}
+                        {%endif%}
+                    </tbody>
+                </table>
 
+    </div>
+</div>
 
+{% endblock content %}
+{% block pagination %}
 
-        {% endblock content %}
-        {% block pagination %}
-
-        {% endblock pagination %}
+{% endblock pagination %}
