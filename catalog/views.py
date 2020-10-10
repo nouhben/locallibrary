@@ -146,7 +146,7 @@ def renew_book_librarian(request, instance_id):
 
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from catalog.models import Author
+from catalog.models import Author, Book, BookInstance
 
 
 class AuthorCreate(PermissionRequiredMixin, CreateView):
@@ -164,4 +164,21 @@ class AuthorUpdate(PermissionRequiredMixin, UpdateView):
 class AuthorDelete(PermissionRequiredMixin, DeleteView):
     permission_required = ('catalog.can_create_author',)
     model = Author
+    success_url = reverse_lazy('authors')
+
+#Books
+class BookCreate(PermissionRequiredMixin, CreateView):
+    permission_required = ('catalog.can_create_author',)
+    model = Book
+    fields = '__all__'
+    #initial = {'date_of_death': '05/01/2018'}
+
+class BookUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = ('catalog.can_create_author',)
+    model = Book
+    fields = ['name','date_of_birth', 'date_of_death']
+
+class BookDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = ('catalog.can_create_author',)
+    model = Book
     success_url = reverse_lazy('authors')

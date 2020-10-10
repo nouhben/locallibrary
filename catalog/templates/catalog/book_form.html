@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if user.is_staff %}
+{% if perms.catalog.can_create_author %}
+<form action="" method="post">
+  {% csrf_token %}
+  <table>
+    {{ form.as_table }}
+  </table>
+  <input type="submit" value="Submit">
+</form>
+{% else %}
+<a href="{% url 'books' %}">You are not authorized to preform such action</a>
+{% endif %}
+{% endif %}
+{% endblock %}
