@@ -99,8 +99,6 @@ class LoanedBookListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     #permission_required = 'catalog.can_mark_returned'
     # Or multiple permissions
     permission_required = ('catalog.can_mark_returned')
-    # Note that 'catalog.can_edit' is just an example
-    # the catalog application doesn't have such permission!
     def get_queryset(self):
         return BookInstance.objects.filter(loan_status__exact='O').order_by('due_back_date')
 
@@ -152,14 +150,18 @@ from catalog.models import Author
 
 
 class AuthorCreate(PermissionRequiredMixin, CreateView):
+    #multiple permissions
+    permission_required = ('catalog.can_create_author',)
     model = Author
     fields = '__all__'
     initial = {'date_of_death': '05/01/2018'}
 
 class AuthorUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = ('catalog.can_create_author',)
     model = Author
     fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death']
 
 class AuthorDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = ('catalog.can_create_author',)
     model = Author
     success_url = reverse_lazy('authors')
