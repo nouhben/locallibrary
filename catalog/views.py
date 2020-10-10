@@ -159,7 +159,7 @@ class AuthorCreate(PermissionRequiredMixin, CreateView):
 class AuthorUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = ('catalog.can_create_author',)
     model = Author
-    fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death']
+    fields = ['name','date_of_birth', 'date_of_death']
 
 class AuthorDelete(PermissionRequiredMixin, DeleteView):
     permission_required = ('catalog.can_create_author',)
